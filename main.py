@@ -49,9 +49,10 @@ def main():
 
 
     # Convert positions to mini court positions 
-    player_mini_court_detections, ball_mini_court_detections = mini_court.convert_bounding_boxes_to_mini_court_coordinates(player_detections, 
-                                                                                                                           ball_detections, 
-                                                                                                                           court_keypoints)
+    player_mini_court_detections = mini_court.convert_bounding_boxes_players_to_mini_court_coordinates(player_detections, court_keypoints)
+    ball_mini_court_detections = mini_court.convert_bounding_boxes_ball_to_mini_court_coordinates(ball_detections, court_keypoints)
+
+    
 
     player_stats_data = [{
         'frame_num':0,
