@@ -24,20 +24,6 @@ def get_clossest_keypoint_index(point, key_points, key_points_indices):
     
     return key_point_ind
 
-def get_closest_keypoints(point, key_points, key_points_indices, k=3):
-    distances = []
-    for keypoint_index in key_points_indices:
-        keypoint = key_points[keypoint_index*2], key_points[keypoint_index*2+1]
-        distance = ((point[0] - keypoint[0]) ** 2 + (point[1] - keypoint[1]) ** 2) ** 0.5
-        distances.append((distance, keypoint_index))
-    distances.sort()
-    return [index for _, index in distances[:k]], [dist for dist, _ in distances[:k]]
-
-
-def get_height_of_bbox(bbox):
-    #y2 - y1 
-    return bbox[3] - bbox[1] 
-
 def measure_xy_distance(p1,p2): #Antes int era abs
     return (p1[0] - p2[0]), (p1[1] - p2[1])
 

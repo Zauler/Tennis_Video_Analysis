@@ -8,17 +8,16 @@ from utils import (
     convert_pixel_distance_to_meteres,
     get_foot_position,
     get_clossest_keypoint_index,
-    get_height_of_bbox,
     measure_xy_distance,
     get_center_of_bbox,
     measure_distance)
 
 class MiniCourt():
     def __init__(self, frame):
-        self.drawing_rectangle_width = 250
+        self.drawing_rectangle_width = 280
         self.drawing_rectangle_height = 500
-        self.buffer = 50
-        self.padding_court=20
+        self.buffer = 20
+        self.padding_court=50
         
         self.set_canvas_background_box_position(frame)
         self.set_mini_court_position()
@@ -128,9 +127,9 @@ class MiniCourt():
     def draw_background_rectangle(self,frame):
         shapes = np.zeros_like(frame,np.uint8)
         # Draw the rectangle
-        cv2.rectangle(shapes, (self.start_x, self.start_y), (self.end_x, self.end_y), (255, 255, 255), cv2.FILLED)
+        cv2.rectangle(shapes, (self.start_x, self.start_y), (self.end_x, self.end_y), (144, 238, 144), cv2.FILLED)
         out = frame.copy()
-        alpha=0.5
+        alpha=0.7
         mask = shapes.astype(bool)
         out[mask] = cv2.addWeighted(frame, alpha, shapes, 1 - alpha, 0)[mask]
 
@@ -167,14 +166,13 @@ class MiniCourt():
         reference_length_y_meters = constants.NO_MANS_LAND_HEIGHT
         
         if closest_key_point_index in lateral_points:
-            
-            reference_length_x_pixels = abs(original_court_key_points[8] - original_court_key_points[12])
-            reference_length_y_pixels = abs(original_court_key_points[9] - original_court_key_points[17])
+            reference_length_x_pixels = abs(original_court_key_points[4*2] - original_court_key_points[6*2])
+            reference_length_y_pixels = abs(original_court_key_points[6*2+1] - original_court_key_points[12*2+1])
             
         else:
 
-            reference_length_x_pixels = abs(original_court_key_points[10] - original_court_key_points[14])
-            reference_length_y_pixels = abs(original_court_key_points[15] - original_court_key_points[23])
+            reference_length_x_pixels = abs(original_court_key_points[5*2] - original_court_key_points[7*2])
+            reference_length_y_pixels = abs(original_court_key_points[7*2+1] - original_court_key_points[13*2+1])
             
             
         # conver pixel distance to meters 
@@ -234,16 +232,16 @@ class MiniCourt():
             ball_position = get_center_of_bbox(ball_box)
             
             #Get the closest Keypoint in pixels 
-            clossest_key_point_index = get_clossest_keypoint_index(ball_position, original_court_key_points, [10] )
+            clossest_key_point_index = get_clossest_keypoint_index(ball_position, original_court_key_points, [4,12,13,7] )
             clossest_key_point = (original_court_key_points[clossest_key_point_index*2], 
                                 original_court_key_points[clossest_key_point_index*2+1] )
             
-            mini_court_player_position  = self.get_mini_court_coordinates(ball_position,
+            mini_court_ball_position  = self.get_mini_court_coordinates(ball_position,
                                                                         clossest_key_point,
                                                                         clossest_key_point_index,
                                                                         original_court_key_points
                                                                         )                
-            output_ball_boxes.append({1:mini_court_player_position})
+            output_ball_boxes.append({1:mini_court_ball_position})
                     
         return output_ball_boxes
     

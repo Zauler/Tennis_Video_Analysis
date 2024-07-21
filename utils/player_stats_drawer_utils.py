@@ -14,12 +14,15 @@ def draw_player_stats(output_video_frames, player_stats):
         avg_player_1_speed  = row["player_1_average_player_speed"]
         avg_player_2_speed  = row["player_2_average_player_speed"]
         
+        player_1_shoots = row["player_1_number_of_shots"]
+        player_2_shoots = row["player_2_number_of_shots"]
+        
         frame = output_video_frames[index]
         
         shapes = np.zeros_like(frame, np.uint8)
         
         width = 350
-        height = 230
+        height = 260
         
         start_x = frame.shape[1]-1900 #400
         start_y = frame.shape[0]-1000 #500
@@ -27,7 +30,7 @@ def draw_player_stats(output_video_frames, player_stats):
         end_y = start_y + height
         
         overlay = frame.copy()
-        cv2.rectangle(overlay, (start_x, start_y), (end_x, end_y), (0,0,0), -1)
+        cv2.rectangle(overlay, (start_x, start_y), (end_x, end_y), (98,37,18), -1)
         alpha = 0.5
         cv2.addWeighted(overlay, alpha, frame, 1- alpha, 0, frame)
         output_video_frames[index] = frame
@@ -55,6 +58,11 @@ def draw_player_stats(output_video_frames, player_stats):
         output_video_frames[index] = cv2.putText(output_video_frames[index], text, (start_x+10, start_y+200), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (255, 255, 255), 1)
         text = f"{avg_player_1_speed:.1f} km/h    {avg_player_2_speed:.1f} km/h"
         output_video_frames[index] = cv2.putText(output_video_frames[index], text, (start_x+130, start_y+200), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
+        
+        text = "Number of Shots"
+        output_video_frames[index] = cv2.putText(output_video_frames[index], text, (start_x+10, start_y+240), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (255, 255, 255), 1)
+        text = f"    {player_1_shoots:.0f}            {player_2_shoots:.0f} "
+        output_video_frames[index] = cv2.putText(output_video_frames[index], text, (start_x+130, start_y+240), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
         
         
     return output_video_frames
