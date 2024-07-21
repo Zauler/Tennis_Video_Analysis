@@ -9,8 +9,8 @@ from utils import (
     get_foot_position,
     get_clossest_keypoint_index,
     measure_xy_distance,
-    get_center_of_bbox,
-    measure_distance)
+    get_center_of_bbox
+    )
 
 class MiniCourt():
     def __init__(self, frame):
@@ -168,12 +168,10 @@ class MiniCourt():
         if closest_key_point_index in lateral_points:
             reference_length_x_pixels = abs(original_court_key_points[4*2] - original_court_key_points[6*2])
             reference_length_y_pixels = abs(original_court_key_points[6*2+1] - original_court_key_points[12*2+1])
-            
         else:
 
             reference_length_x_pixels = abs(original_court_key_points[5*2] - original_court_key_points[7*2])
             reference_length_y_pixels = abs(original_court_key_points[7*2+1] - original_court_key_points[13*2+1])
-            
             
         # conver pixel distance to meters 
         distance_from_keypoint_x_meters = convert_pixel_distance_to_meteres(distance_from_keypoint_x_pixels, 
@@ -230,9 +228,10 @@ class MiniCourt():
         for frame_num, ball_bbox in enumerate(ball_boxes):
             ball_box = ball_bbox[1]
             ball_position = get_center_of_bbox(ball_box)
+            #ball_position = get_foot_position(ball_box)
             
             #Get the closest Keypoint in pixels 
-            clossest_key_point_index = get_clossest_keypoint_index(ball_position, original_court_key_points, [4,12,13,7] )
+            clossest_key_point_index = get_clossest_keypoint_index(ball_position, original_court_key_points, [4,5,12,13] )
             clossest_key_point = (original_court_key_points[clossest_key_point_index*2], 
                                 original_court_key_points[clossest_key_point_index*2+1] )
             
@@ -241,6 +240,11 @@ class MiniCourt():
                                                                         clossest_key_point_index,
                                                                         original_court_key_points
                                                                         )                
+            
+            #Correction factor 
+            x,y = mini_court_ball_position
+            mini_court_ball_position = (x, y+50)
+            
             output_ball_boxes.append({1:mini_court_ball_position})
                     
         return output_ball_boxes
