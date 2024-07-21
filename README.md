@@ -2,6 +2,8 @@
 
 This project focuses on developing an AI-powered system to track tennis players and the ball on the court. Leveraging advanced technologies such as YOLO for object detection, OpenCV for computer vision tasks, and PyTorch for deep learning models, this system provides comprehensive analysis and visualization for tennis matches.
 
+![Tennis Tracking GIF](https://github.com/Zauler/Tennis_Video_Analysis/blob/master/output_videos/tennis_tracking_adjusted.gif)
+
 ## Features
 
 ### Video Input
@@ -35,3 +37,5 @@ This project focuses on developing an AI-powered system to track tennis players 
 - **OpenCV**: For computer vision tasks.
 - **PyTorch**: For implementing deep learning models.
 - **Pandas**: For managing and processing player statistics.
+
+
